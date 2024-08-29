@@ -1,0 +1,57 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/host/src",
+  "monorepo": true,
+  "root": "apps/host",
+  "compilerOptions": {
+    "webpack": true,
+    "assets": [
+      "**/*.proto",
+      "**/*.json",
+      {
+        "include": "./proto",
+        "outDir": "dist/proto",
+        "watchAssets": true
+      }
+    ],
+    "tsConfigPath": "apps/host/tsconfig.app.json"
+  },
+  "projects": {
+    "host": {
+      "type": "application",
+      "root": "apps/host",
+      "entryFile": "main",
+      "sourceRoot": "apps/host/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/host/tsconfig.app.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "user": {
+      "type": "application",
+      "root": "apps/user",
+      "entryFile": "main",
+      "sourceRoot": "apps/user/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/user/tsconfig.app.json"
+      }
+    },
+    "dictionary": {
+      "type": "application",
+      "root": "apps/dictionary",
+      "entryFile": "main",
+      "sourceRoot": "apps/dictionary/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/dictionary/tsconfig.app.json"
+      }
+    }
+  }
+}

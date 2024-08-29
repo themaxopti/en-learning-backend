@@ -1,0 +1,22 @@
+import { Module } from '@nestjs/common';
+import { DictionaryController } from './dictionary.controller';
+import { DictionaryService } from './dictionary.service';
+import { ConfigModule } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from './models/users.model';
+
+
+@Module({
+  imports: [
+    SequelizeModule.forFeature([User]),
+  ],
+  controllers: [DictionaryController],
+  providers: [
+    DictionaryService,
+    User
+  ],
+  exports: [
+  ]
+})
+export class DictionaryModule { }
