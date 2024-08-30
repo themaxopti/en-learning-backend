@@ -39,4 +39,21 @@ export class DictionaryController {
       ],
     };
   }
+
+  @GrpcMethod('UserService', 'CreateUser')
+  createUser() {
+    // sayHi();
+    return {
+      users: [
+        {
+          id: 1,
+          name: 'John',
+        },
+        {
+          id: 2,
+          name: 'Roger22',
+        },
+      ],
+    };
+  }
 }

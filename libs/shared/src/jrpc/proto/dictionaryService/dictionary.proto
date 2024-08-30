@@ -3,10 +3,10 @@ syntax = "proto3";
 package dictionary;
 
 service DictionaryService {
-    rpc GetUsers(getUserRequest) returns (getUsersResponse) {}
+    rpc GetDictionary(getDictionaryRequest) returns (getDictionaryResponse) {}
 }
 
-message getUserRequest {
+message getDictionaryRequest {
 
 }
 
@@ -14,7 +14,12 @@ message getUsersResponse {
     repeated User users = 1;
 }
 
-message User {
+message Word {
     int32 id = 1;
-    string name = 2;
+    string userId = 2;
+}
+
+message Dictionary {
+    int32 id = 1;
+    string userId = 2;
 }
