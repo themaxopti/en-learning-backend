@@ -3,10 +3,13 @@ import { HostController } from './host.controller';
 import { HostService } from './host.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { APP_FILTER } from '@nestjs/core';
+import { GrpcServerExceptionFilter } from "nestjs-grpc-exceptions";
 
 @Module({
   imports: [
     ClientsModule.register([
+
       {
         name: 'DICTIONARY_PACKAGE',
         transport: Transport.GRPC,
@@ -21,11 +24,14 @@ import { join } from 'path';
         options: {
           package: 'user',
           protoPath: join(__dirname, '../../libs/shared/jrpc/proto/userService/user.proto'),
+          url: "localhost:5003"
         },
       },
     ]),
   ],
   controllers: [HostController],
-  providers: [HostService],
+  providers: [
+    HostService,
+  ],
 })
-export class HostModule {}
+export class HostModule { }

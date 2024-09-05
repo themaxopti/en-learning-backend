@@ -10,9 +10,10 @@ message getDictionaryRequest {
 
 }
 
-message getUsersResponse {
-    repeated User users = 1;
+message getDictionaryResponse {
+
 }
+
 
 message Word {
     int32 id = 1;

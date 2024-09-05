@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from '@nestjs/sequelize';
-import { DictionaryModule } from "./user/user.module";
+import { UserModule } from "./user/user.module";
 import { User } from "./user/models/users.model";
 
 
@@ -9,7 +9,7 @@ import { User } from "./user/models/users.model";
     // controllers: [AuthController],
     // providers: [AuthService],
     imports: [
-        ConfigModule.forRoot({ isGlobal: true, envFilePath: `${process.cwd()}/apps/dictionary/.development.env` }),
+        ConfigModule.forRoot({ isGlobal: true, envFilePath: `${process.cwd()}/apps/user/.development.env` }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
             username: process.env.DB_USER,
@@ -20,7 +20,7 @@ import { User } from "./user/models/users.model";
             models: [User],
             autoLoadModels: true
         }),
-        DictionaryModule,
+        UserModule,
     ],
     providers: [
         // ...databaseProviders,

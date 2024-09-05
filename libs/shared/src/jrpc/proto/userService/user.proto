@@ -5,14 +5,39 @@ package user;
 service UserService {
     rpc GetUsers(getUserRequest) returns (getUsersResponse) {}
     rpc CreateUser(createUserRequest) returns (createUserResponse) {}
+    rpc Login(LoginDto) returns (LoginResponse) {}
+    rpc Auth(AuthRequest) returns (AuthResponse) {}
+}
+
+message AuthRequest {
+    
+}
+
+message AuthResponse {
+
+}
+
+message LoginDto {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string id = 1;
+    string userName = 2;
+    string email = 3;
+    string token = 4;
 }
 
 message createUserRequest {
-
+    string userName = 1;
+    string email = 2;
+    string password = 3;
 }
 
 message createUserResponse {
-    
+    string msg = 1;
+    int32 statusCode = 2;
 }
 
 message getUserRequest {
