@@ -8,7 +8,6 @@ import { User } from './models/users.model';
 import { CryptoService } from './services/crypto.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './services/auth.service';
-import { TestService } from './services/test.service';
 
 
 @Module({
@@ -23,7 +22,7 @@ import { TestService } from './services/test.service';
   ],
   controllers: [UserController],
   providers: [
-    TestService,
+    // TestService,
     // forwardRef(() => UserService),
     CryptoService,
     AuthService,
@@ -32,7 +31,6 @@ import { TestService } from './services/test.service';
   ],
   exports: [
     UserService,
-    TestService,
     CryptoService,
     AuthService,
   ]

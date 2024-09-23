@@ -1,26 +1,150 @@
 syntax = "proto3";
+import "google/protobuf/wrappers.proto";
 
 package dictionary;
 
+
 service DictionaryService {
     rpc GetDictionary(getDictionaryRequest) returns (getDictionaryResponse) {}
+    rpc GetDictionaries(getDictionariesRequest) returns (getDictionariesResponse) {}
+    rpc CreateDictionary(createDictionaryRequest) returns (createDictionaryResponse) {}
+    rpc CreateWord(createWordRequest) returns (createWordResponse) {}
+    rpc CreateWords(createWordsRequest) returns (getWordsResponse) {}
+    rpc GetWords(getWordsRequest) returns (getWordsResponse) {}
+    rpc DeleteWords(deleteWordsRequest) returns (deleteWordsResponse) {}
+    rpc DeleteWord(deleteWordRequest) returns (deleteWordResponse) {}
+}
+
+message wordsIds {
+    int32 id = 1;
+}
+
+message deleteWordsRequest {
+    int32 dictionaryId = 1;
+    repeated wordsIds wordsId = 2;
+}
+
+message deleteWordsResponse {
+   int32 statusCode = 1;
+   string message = 2;
+}
+
+message deleteWordRequest {
+    int32 dictionaryId = 1;
+    int32 id = 2;
+}
+
+message deleteWordResponse {
+   int32 statusCode = 1;
+   string message = 2;
+}
+
+message createWordRequest {
+    string title = 1;
+    string translate = 2;
+    int32 userId = 3;
+    int32 dictionaryId = 4;
+}
+
+message CreateWordResponseData {
+    int32 id = 1;
+    string title = 2;
+    string translate = 3;
+    int32 dictionaryId = 4;
+    int32 userId = 5;
+    int32 index = 6;
+    int32 globalIndex = 7;
+}
+
+message createWordResponse {
+   int32 statusCode = 1;
+   CreateWordResponseData data = 2;
+}
+
+message createWordDto {
+    string title = 1;
+    string translate = 2;
+    int32 userId = 3;
+}
+
+message createWordsRequest {
+    int32 userId = 1;
+    int32 dictionaryId = 2;
+    repeated createWordDto words = 3;
+}
+
+message CreateWordsResponseData {
+    int32 userId = 1;
+    int32 dictionaryId = 2;
+    repeated createWordDto words = 3;
+}
+
+message createWordsResponse {
+    int32 statusCode = 1;
+    CreateWordsResponseData data = 2;
+}
+
+message getWordsRequest {
+    int32 dictionaryId = 1;
+    int32 page = 2;
+    int32 limit = 3;
+}
+
+message getWordsResponse {
+    int32 statusCode = 1;
+    repeated Word data = 2;
 }
 
 message getDictionaryRequest {
+    int32 id = 1;
+    int32 userId = 2;
+}
 
+message GetDictionaryResponseData {
+    int32 id = 1;
+    string title = 2;
+    int32 userId = 3;
 }
 
 message getDictionaryResponse {
-
+    int32 statusCode = 1;
+    GetDictionaryResponseData data = 2;
 }
 
+message getDictionariesRequest {
+    int32 userId = 1;
+    int32 page = 2;
+    int32 limit = 3;
+}
+
+message getDictionariesResponse {
+    int32 statusCode = 1;
+    repeated Dictionary data = 2;
+}
+
+message createDictionaryRequest {
+    int32 userId = 1;
+    string title = 2;
+}
+
+message createDictionaryResponse {
+    int32 statusCode = 1;
+    Dictionary data = 2;
+}
 
 message Word {
     int32 id = 1;
-    string userId = 2;
+    string dictionaryId = 2;
+    string title = 3;
+    string translate = 4;
+    int32 userId = 5;
+    int32 globalIndex = 6;
+    int32 index = 7;
 }
 
 message Dictionary {
     int32 id = 1;
     string userId = 2;
+    string title = 3;
+    repeated Word words = 4;
 }

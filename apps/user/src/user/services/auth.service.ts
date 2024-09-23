@@ -1,17 +1,14 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from '../models/users.model';
-import { CreateUserDto } from '../dto/createUser.dto';
-import { stringError } from '@app/shared/helpers/error.helpers';
-import { LoginDto } from '../dto/login.dto';
+import { RpcStringError, stringError } from '@app/shared/helpers/error.helpers';
 import { UserService } from './user.service';
 import { RpcException } from '@nestjs/microservices';
 import { CryptoService } from './crypto.service';
+import { LoginDto } from '@app/shared/types/dto/userService.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectModel(User) private userRepository: typeof User,
+        // @InjectModel(User) private userRepository: typeof User,
         @Inject(forwardRef(() => UserService))
         private userService: UserService,
         @Inject(forwardRef(() => CryptoService))
@@ -23,13 +20,13 @@ export class AuthService {
         const user = await this.userService.findOne({ email })
 
         if (!user) {
-            throw new RpcException(stringError({ msg: "This user is not exist", statusCode: 404 }))
+            RpcStringError("Email or password are not correct", 400)
         }
 
         const isPassportCompare = await this.cryptoService.comparePassword(password, user.password)
 
         if (!isPassportCompare) {
-            throw new RpcException(stringError({ msg: "Password does not match", statusCode: 404 }))
+            throw new RpcException(stringError({ msg: "Email or password are not correct", statusCode: 400 }))
         }
 
         const userToken = await this.cryptoService.createToken(user.id, user.email)
@@ -39,16 +36,21 @@ export class AuthService {
         await user.save()
 
         return {
-            id: user.id,
-            email: user.email,
-            userName: user.userName,
-            token: userToken
+            statusCode: 200,
+            data: {
+                id: user.id,
+                email: user.email,
+                userName: user.userName,
+                token: userToken
+            }
         }
     }
 
-    async deleteUserToken(token: string, userId) {
+    async deleteUserToken(userId) {
         const user = await this.userService.findOne({ id: userId })
-        
+        user.token = null
+        await user.save()
+        return { msg: 'User logged out', statusCode: 200 }
     }
 
     async checkUserToken(token: string) {
@@ -58,14 +60,28 @@ export class AuthService {
 
         const user = await this.userService.findOne({ id: decodedToken.userId })
         if (!user) {
-            throw new RpcException(stringError({ msg: 'This user does not exist', statusCode: 404 }))
+            throw new RpcException(stringError({ msg: 'This user does not exist', statusCode: 400 }))
         }
 
         const compareTokens = await this.cryptoService.comparePassword(token, user.token)
 
         if (!compareTokens) {
-            throw new RpcException(stringError({ msg: 'Token does not match', statusCode: 404 }))
+            throw new RpcException(stringError({ msg: 'Token does not match', statusCode: 400 }))
         }
+
+        return user.id
     }
 
+    async auth(userId: number) {
+        const user = await this.userService.findOne({ id: String(userId) })
+
+        if (!user) {
+            RpcStringError('User is not found', 400)
+        }
+
+        return {
+            statusCode: 200,
+            data: user
+        }
+    }
 }   

@@ -19,9 +19,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/back3/test/jest-e2e.json",
-    "migration:create":"cd libs\\shared\\src\\db && npx sequelize-cli migration:generate",
-    "migration:run":"cd libs\\shared\\src\\db && npx sequelize-cli db:migrate",
-    "migration:undo":"cd libs\\shared\\src\\db && npx sequelize-cli db:migrate:undo"
+    "migration:create": "cd libs\\shared\\src\\db && npx sequelize-cli migration:generate",
+    "migration:run": "cd libs\\shared\\src\\db && npx sequelize-cli db:migrate",
+    "migration:undo": "cd libs\\shared\\src\\db && npx sequelize-cli db:migrate:undo"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.10.9",
@@ -37,6 +37,8 @@
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
+    "google-protobuf": "^3.21.4",
+    "grpc-tools": "^1.12.4",
     "nestjs-grpc-exceptions": "^0.2.2",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",

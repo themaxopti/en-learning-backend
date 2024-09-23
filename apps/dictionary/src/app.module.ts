@@ -2,7 +2,11 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from '@nestjs/sequelize';
 import { DictionaryModule } from "./dictionary/dictionary.module";
-import { User } from "./dictionary/models/users.model";
+import { Dictionary } from "./dictionary/models/dictionary.model";
+import { Word } from "./dictionary/models/word.model";
+import { DictionaryService } from "./dictionary/dictionary.service";
+import { AuthService } from "apps/user/src/user/services/auth.service";
+import { UserModule } from "apps/user/src/user/user.module";
 
 
 @Module({
@@ -17,13 +21,18 @@ import { User } from "./dictionary/models/users.model";
             database: process.env.DB_NAME_DEVELOPMENT,
             host: process.env.DB_HOST,
             port: Number(process.env.DB_PORT),
-            models: [User],
+            models: [Dictionary, Word],
             autoLoadModels: true
         }),
         DictionaryModule,
+        UserModule
     ],
     providers: [
         // ...databaseProviders,
+        // DictionaryService,
+        // AuthService,
+        // Dictionary,
+        // Word
     ],
 
 

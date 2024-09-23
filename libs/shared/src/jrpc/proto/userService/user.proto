@@ -6,6 +6,7 @@ service UserService {
     rpc GetUsers(getUserRequest) returns (getUsersResponse) {}
     rpc CreateUser(createUserRequest) returns (createUserResponse) {}
     rpc Login(LoginDto) returns (LoginResponse) {}
+    rpc Logout(LogoutDto) returns (LogoutResponse) {}
     rpc Auth(AuthRequest) returns (AuthResponse) {}
 }
 
@@ -14,7 +15,17 @@ message AuthRequest {
 }
 
 message AuthResponse {
+    int32 statusCode = 1;
+    User data = 2;
+}
 
+message LogoutDto {
+  
+}
+
+message LogoutResponse {
+    string msg = 1;
+    int32 statusCode = 2;
 }
 
 message LoginDto {
@@ -23,10 +34,8 @@ message LoginDto {
 }
 
 message LoginResponse {
-    string id = 1;
-    string userName = 2;
-    string email = 3;
-    string token = 4;
+    int32 statusCode = 1;
+    User data = 2;
 }
 
 message createUserRequest {
@@ -50,6 +59,7 @@ message getUsersResponse {
 
 message User {
     int32 id = 1;
-    string name = 2;
+    string userName = 2;
+    string email = 3;
+    string token = 4;
 }
-

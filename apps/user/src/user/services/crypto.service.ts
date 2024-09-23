@@ -1,21 +1,15 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { User } from '../models/users.model';
-import { CreateUserDto } from '../dto/createUser.dto';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { RpcException } from '@nestjs/microservices';
 import { stringError } from '@app/shared/helpers/error.helpers';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
-import { TestService } from './test.service';
 
 @Injectable()
 export class CryptoService {
     constructor(
         private readonly jwtService: JwtService,
-        @Inject(forwardRef(() => TestService))
-        private readonly testService: TestService,
         @Inject(forwardRef(() => UserService))
         private readonly userService: UserService
     ) { }
@@ -29,7 +23,7 @@ export class CryptoService {
     }
 
     async createToken(userId: string | number, email: string) {
-        return this.jwtService.signAsync({ userId, email }, { expiresIn: '1m' })
+        return this.jwtService.signAsync({ userId, email }, { expiresIn: '1h' })
     }
 
     async hashToken(token: string) {

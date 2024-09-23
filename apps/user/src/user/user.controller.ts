@@ -5,12 +5,12 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/users.model';
 import { GrpcMethod } from '@nestjs/microservices';
-import { CreateUserDto } from './dto/createUser.dto';
-import { objectError } from '@app/shared/helpers/error.helpers';
-import { GrpcCookieInterceptor } from './interceptors/cookie.interceptor';
+import { objectError, RpcStringError } from '@app/shared/helpers/error.helpers';
+// import { GrpcCookieInterceptor } from './interceptors/cookie.interceptor';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
 import { AuthService } from './services/auth.service';
-import { LoginDto } from './dto/login.dto';
+import { GrpcCookieInterceptor } from '@app/shared/interceptors/cookie.interceptor';
+import { CreateUserDto, LoginDto } from '@app/shared/types/dto/userService.dto';
 
 dotenv.config({ path: process.cwd() + '../.env.development' });
 
@@ -70,15 +70,22 @@ export class UserController {
   @UseInterceptors(GrpcCookieInterceptor)
   @GrpcMethod('UserService', 'Auth')
   async auth(data: CreateUserDto, metadata: any, call: any) {
-    // console.log(metadata);
-    return {};
+    const userId = metadata.get('userId')[0]
+    return this.authService.auth(userId)
   }
 
   // @UseInterceptors(GrpcCookieInterceptor)
   @GrpcMethod('UserService', 'Login')
   async login(data: LoginDto, metadata: any, call: ServerUnaryCall<any, any>) {
     console.log(data);
-    
     return this.authService.login(data);
+  }
+
+  @UseInterceptors(GrpcCookieInterceptor)
+  @GrpcMethod('UserService', 'Logout')
+  async logout(data, metadata: Metadata) {
+    const userId = metadata.get('userId')[0]
+   
+    return this.authService.deleteUserToken(userId);
   }
 }

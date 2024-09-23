@@ -3,8 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { BaseRpcContext, RpcException } from '@nestjs/microservices';
 import { Metadata } from '@grpc/grpc-js';
-import { AuthService } from '../services/auth.service';
+// import { AuthService } from '../services/auth.service';
 import { stringError } from '@app/shared/helpers/error.helpers';
+import { AuthService } from 'apps/user/src/user/services/auth.service';
 
 @Injectable()
 export class GrpcCookieInterceptor implements NestInterceptor {
@@ -24,6 +25,10 @@ export class GrpcCookieInterceptor implements NestInterceptor {
         ctx.add('userId', String(userId))
 
         return next.handle();
+    }
+
+    private checkUserToken(token:string){
+
     }
 
     private extractTokenFromCookie(token: string): string {

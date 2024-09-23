@@ -1,9 +1,9 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/users.model';
-import { CreateUserDto } from '../dto/createUser.dto';
 import { CryptoService } from './crypto.service';
-import { WhereOptions } from 'sequelize';
+import { RpcStringError } from '@app/shared/helpers/error.helpers';
+import { CreateUserDto } from '@app/shared/types/dto/userService.dto';
 
 interface FindUserDto {
   email?: string
@@ -47,9 +47,14 @@ export class UserService {
 
   async create(dto: CreateUserDto) {
     const { email, userName, password } = dto
-    await this.checkIfUserExist(email)
+    const isUserExist = await this.checkIfUserExist(email)
+    if (isUserExist) {
+      throw RpcStringError('This user is already exist', HttpStatus.FORBIDDEN)
+    }
     const hashedPassword = await this.cryptoService.hashPassword(password)
     const user = await this.userRepository.create({ email, userName, password: hashedPassword })
     return user
   }
+
+
 }
