@@ -46,3 +46,10 @@ export class DeleteWordsDto {
     }[]
     dictionaryId: number
 }
+
+export class ChangeWordsIndexDto {
+    wordsIndexes: {
+        indexWillBe: number
+        id: number
+    }[]
+} 

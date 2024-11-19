@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package quiz;
+
+service QuizService {
+    rpc GetQuiz(getQuizRequest) returns (getQuizResponse) {}
+    rpc GetQuizzes(getQuizzesRequest) returns (getQuizzesResponse) {}
+    rpc AddQuiz(addQuizRequest) returns (getQuizResponse) {}
+    rpc RemoveQuiz(removeQuizRequest) returns (removeQuizResponse) {}
+}
+
+message Word {
+    string word = 1;
+    string translate = 2;
+    repeated string variants = 3;
+}
+
+message Quiz {
+    int32 id = 1;
+    string title = 2;
+    int32 userId = 3;
+    repeated Word words = 4;
+}
+
+message getQuizRequest {
+    int32 id = 1;
+    int32 userId = 2;
+}
+
+message getQuizResponse {
+   int32 statusCode = 1;
+   string message = 2;
+   Quiz data = 3;
+}
+
+message getQuizzesRequest {
+    int32 userId = 1;
+    int32 limit = 2;
+    int32 offset = 3;
+}
+
+message getQuizzesResponse {
+   int32 statusCode = 1;
+   repeated Quiz quizzes = 2;
+}
+
+message addQuizRequest {
+    string title = 1;
+    repeated int32 dictionaries = 2;
+    string test = 3;
+}
+
+message removeQuizRequest {
+    int32 quizId = 1;
+}
+
+message removeQuizResponse {
+    int32 statusCode = 1;
+    string message = 2;
+}

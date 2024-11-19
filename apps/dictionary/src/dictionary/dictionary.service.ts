@@ -5,7 +5,7 @@ import { Word } from './models/word.model';
 import { WhereOptions } from 'sequelize';
 import { RpcException } from '@nestjs/microservices';
 import { RpcStringError, stringError } from '@app/shared/helpers/error.helpers';
-import { CreateDictionaryDto, CreateWordDto, CreateWordsDto, DeleteWordDto, DeleteWordsDto, FindDictionariesDto, FindDictionaryDto, GetWordsDto } from '@app/shared/types/dto/dictionaryService.dto';
+import { ChangeWordsIndexDto, CreateDictionaryDto, CreateWordDto, CreateWordsDto, DeleteWordDto, DeleteWordsDto, FindDictionariesDto, FindDictionaryDto, GetWordsDto } from '@app/shared/types/dto/dictionaryService.dto';
 
 
 @Injectable()
@@ -179,6 +179,25 @@ export class DictionaryService {
     return {
       message: 'Word was deleted'
     }
+  }
+
+  async changeWordsIndex(dto: ChangeWordsIndexDto) {
+    console.log(dto);
+    
+    const { wordsIndexes } = dto
+    for (let i = 0; i < wordsIndexes.length; i++) {
+      const element = wordsIndexes[i];
+      const word = await this.wordRepository.findOne({ where: { id: element.id } })
+      if (!word) {
+        RpcStringError('This word does not exist', 400)
+      }
+      // await word.update('index', element.indexWillBe)
+      await word.update({index:element.indexWillBe})
+    }
+  }
+
+  async changeWordGlobalIndex(dto: { userId: number, id: number, indexWillBe: number }) {
+
   }
 
 }

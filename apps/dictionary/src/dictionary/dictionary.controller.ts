@@ -3,7 +3,7 @@ import { DictionaryService } from './dictionary.service';
 import * as dotenv from 'dotenv';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcCookieInterceptor } from '@app/shared/interceptors/cookie.interceptor';
-import { CreateDictionaryDto, CreateWordDto, CreateWordsDto, DeleteWordDto, DeleteWordsDto, FindDictionariesDto, FindDictionaryDto, GetWordsDto } from '@app/shared/types/dto/dictionaryService.dto';
+import {  ChangeWordsIndexDto, CreateDictionaryDto, CreateWordDto, CreateWordsDto, DeleteWordDto, DeleteWordsDto, FindDictionariesDto, FindDictionaryDto, GetWordsDto } from '@app/shared/types/dto/dictionaryService.dto';
 
 dotenv.config({ path: process.cwd() + '../.env.development' });
 
@@ -102,6 +102,17 @@ export class DictionaryController {
 
     return {
       statusCode: response.length > 0 ? 200 : 401,
+      data: response
+    }
+  }
+
+  @UseInterceptors(GrpcCookieInterceptor)
+  @GrpcMethod('DictionaryService', 'ChangeWordsIndex')
+  async changeWordsIndex(data: ChangeWordsIndexDto) {
+    const response = await this.dictionaryService.changeWordsIndex(data)
+
+    return {
+      statusCode: 200,
       data: response
     }
   }

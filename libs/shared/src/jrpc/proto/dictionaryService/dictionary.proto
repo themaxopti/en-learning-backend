@@ -13,6 +13,21 @@ service DictionaryService {
     rpc GetWords(getWordsRequest) returns (getWordsResponse) {}
     rpc DeleteWords(deleteWordsRequest) returns (deleteWordsResponse) {}
     rpc DeleteWord(deleteWordRequest) returns (deleteWordResponse) {}
+    rpc ChangeWordsIndex(changeWordsIndexRequest) returns (changeWordsIndexResponse) {}
+}
+
+message WordsIndexes {
+    int32 indexWillBe = 1;
+    int32 id = 2;
+}
+
+message changeWordsIndexRequest {
+   repeated WordsIndexes wordsIndexes = 1;
+}
+
+message changeWordsIndexResponse {
+    int32 statusCode = 1;
+    string message = 2;
 }
 
 message wordsIds {
