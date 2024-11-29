@@ -22,7 +22,8 @@ import { UserModule } from "apps/user/src/user/user.module";
             host: process.env.DB_HOST,
             port: Number(process.env.DB_PORT),
             models: [Dictionary, Word],
-            autoLoadModels: true
+            autoLoadModels: true,
+            logging:false
         }),
         DictionaryModule,
         UserModule

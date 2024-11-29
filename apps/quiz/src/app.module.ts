@@ -9,7 +9,6 @@ import { join } from 'path';
   // controllers: [AuthController],
   // providers: [AuthService],
   imports: [
-   
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `${process.cwd()}/apps/quiz/.development.env`,

@@ -6,7 +6,6 @@ import { join } from 'path';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
-  // console.log(process.env.DB_HOST);
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
@@ -22,7 +21,7 @@ async function bootstrap() {
       },
     },
   );
-
+  
   await app.listen();
 }
 bootstrap();
