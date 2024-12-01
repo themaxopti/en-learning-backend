@@ -7,8 +7,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "microservices:all:dev": "concurrently \"npm run start:dev host\" \"npm run start:dev dictionary\" \"npm run start:dev user\" \"npm run start:dev quiz\" ",
+    "microservices:all:prod": "concurrently \"node dist/apps/host/main.js\" \"node dist/apps/dictionary/main.js\" \"node dist/apps/quiz/main.js\" \"node dist/apps/user/main.js\" ",
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "nest build host && nest build dictionary && nest build user && nest build quiz && nest build shared",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",

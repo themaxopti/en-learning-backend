@@ -16,7 +16,7 @@ interface AuthService {
     auth: (args: any, metadata?: any) => any;
 }
 
-@Controller('auth')
+@Controller('/api/auth')
 @UseFilters(HttpExceptionFilter)
 export class AuthController implements OnModuleInit {
     private authService: AuthService;
